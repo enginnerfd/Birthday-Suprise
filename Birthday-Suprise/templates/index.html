@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>سورپرایز تولد تو ❤️</title>
+ <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+   
+<!-- صفحه اول -->
+<section class="screen active" id="welcome">
+    <div class="main-gift">🎁</div>
+
+    <div class="birthday-balloons">
+    <span>🎈</span>
+    <span>🎈</span>
+    <span>🎈</span>
+    <span>🎈</span>
+    <span>🎈</span>
+</div>
+<div class="birthday-cake">
+    <div class="cake-candles">
+        <span class="candle">🕯️</span>
+        <span class="candle">🕯️</span>
+        <span class="candle">🕯️</span>
+    </div>
+    <div class="cake-emoji">🎂</div>
+    <p class="cake-caption">یه روز خاص برای یه آدم خاص! 💗</p>
+</div>
+    <h1>تولدت مبارک، قشنگم ❤️</h1>
+    <p>
+        پنج جعبه پیش روت داری...
+        <br>
+        هر کدوم یه راز مخفی دارن.
+        <br>
+        فقط یکی رو انتخاب کن و ببین چی منتظرته! ✨
+    </p>
+    <button onclick="showBoxes()">شروع سورپرایز 💗</button>
+    <div class="floating-hearts" aria-hidden="true">
+    <span>💗</span>
+    <span>💕</span>
+    <span>💖</span>
+    <span>❤️</span>
+    <span>💘</span>
+    <span>💗</span>
+    <span>💕</span>
+    <span>💖</span>
+</div>
+</section>
+
+<!-- صفحه انتخاب جعبه -->
+<section class="screen" id="selection">
+    <h1>کدوم جعبه رو انتخاب می‌کنی؟ 🎀</h1>
+    <p>با دلت انتخاب کن؛ محتویاتشون مخفیه! ❤️</p>
+
+    <div class="boxes" id="boxes"></div>
+
+    <p class="small">هر جعبه فقط یک بار باز می‌شه.</p>
+</section>
+
+<!-- صفحه نتیجه -->
+<section class="screen" id="reveal">
+    <div class="result">
+        <div class="result-icon" id="resultIcon">🎁</div>
+        <h1>سورپرایز تو! 💖</h1>
+        <h2 id="giftName"></h2>
+        <p id="giftMessage"></p>
+        
+        <button onclick="showScreen('memory')">دیدن خاطره 📸</button>
+        <button onclick="backToBoxes()">برگشت به جعبه‌ها</button>
+    </div>
+</section>
+<section class="screen" id="memory">
+    <div class="memory-card">
+        
+        <h1>یه خاطره قشنگ از ما 💗</h1>
+
+       <div class="memory-photos">
+    <div class="photo-frame">
+        <img src="/static/images/images.jpg" alt="خاطره اول ما">
+        <p>یه لحظه قشنگ از ما 💕</p>
+    </div>
+
+    <div class="photo-frame">
+        <img src="/static/images/images2.jpg" alt="خاطره دوم ما">
+        <p>و یه خاطره دیگه که دوستش دارم ❤️</p>
+    </div>
+    </div>
+    <button onclick="showLetterPage()">خواندن نامه‌ی مخصوص من 💌</button>
+ <button onclick="backToBoxes()">برگشت به جعبه‌ها 🎁</button>
+    </div>
+</section>
+
+<section class="screen" id="letter">
+    <div class="letter-card">
+        <div class="letter-icon">💌</div>
+
+        <h1>یه نامه برای تو ❤️</h1>
+        <p class="letter-subtitle">از ته قلبم، برای قشنگ‌ترین آدم دنیام...</p>
+
+        <div class="letter-paper">
+            <p id="typedLetter"></p>
+            <span id="typingCursor">|</span>
+        </div>
+        
+        <button onclick="showReasonsPage()">۱۰۰ دلیل برای دوست داشتنت 💖</button>
+        <button onclick="startTyping()">دوباره خوندن نامه 💗</button>
+        <button onclick="showScreen('memory')">برگشت به خاطره‌ها 📸</button>
+    </div>
+</section>
+
+<section class="screen" id="reasons">
+    <div class="reasons-card">
+        <div class="reasons-heart">💗</div>
+        <h1>چرا دوستت دارم؟</h1>
+        <p class="reasons-subtitle">
+            چند تا از دلیل‌های دوست‌داشتنت رو اینجا نوشتم...
+        </p>
+
+        <div class="reasons-list" id="reasonsList"></div>
+        
+        <button onclick="showCouponPage()">کوپن تجربه‌ی دونفره 🎟️</button>
+
+        <button onclick="showScreen('letter')">
+            برگشت به نامه 💌
+        </button>
+    </div>
+</section>
+    
+<section class="screen" id="coupon">
+    <div class="coupon-card">
+        <div class="coupon-top">
+            <span class="coupon-icon">🎟️</span>
+            <p class="coupon-label">یک هدیه‌ی مخصوص تو</p>
+            <h1>کوپن تجربه‌ی دونفره 💗</h1>
+        </div>
+
+        <div class="coupon-ticket">
+            <div class="ticket-heart">💖</div>
+            <h2>یک قرار خاطره‌انگیز!</h2>
+
+            <p>
+                این کوپن برای یک تجربه‌ی دونفره‌ست؛
+                یه روز که با هم انتخاب می‌کنیم و
+                براش یه خاطره‌ی قشنگ می‌سازیم.
+            </p>
+
+            <div class="coupon-details">
+                <p>🎬 تماشای فیلم یا 🍓 پیک‌نیک</p>
+                <p>📅 زمان: با توافق همدیگه</p>
+                <p>💕 همراه: تو و من</p>
+            </div>
+
+            <div class="ticket-stamp">ویژه‌ی تو ❤️</div>
+        </div>
+
+        <button onclick="redeemCoupon()">
+            باز کردن هدیه‌ی من 🎁
+        </button>
+
+        <p id="couponMessage" class="coupon-message" aria-live="polite"></p>
+        
+        <button onclick="showHeartSky()">رفتن به آسمان قلب‌ها 💖</button>
+
+        <button onclick="showScreen('reasons')">
+            برگشت به فهرست دلایل 💗
+        </button>
+    </div>
+</section>
+
+<section class="screen" id="heartSky">
+    <div class="heart-sky-background" id="heartSkyBackground"></div>
+
+    <div class="heart-sky-content">
+        <div class="sky-moon">🌙</div>
+        <h1>آسمان قلب‌های من 💖</h1>
+
+        <p class="sky-message">
+            اگه هر قلب یه دلیل برای دوست داشتنت باشه،
+            آسمونم هیچ‌وقت خالی از قلب نمی‌شه. ❤️
+        </p>
+
+        <p class="sky-caption">این آسمون پر از آرزوهای قشنگ برای توئه ✨</p>
+    <button type="button" onclick="showFinalMessagePage()">
+    پیام نهایی مخفی 💌
+    </button>
+
+        <button onclick="showScreen('coupon')">
+            برگشت به کوپن هدیه 🎟️
+        </button>
+    </div>
+</section>
+<section class="screen" id="finalMessage">
+    <div class="final-message-card">
+
+        <div class="secret-lock" id="secretLock">🔐</div>
+
+        <h1>یه راز کوچولو برای تو 💗</h1>
+
+        <p class="final-intro">
+            تا اینجا با هم از چند سورپرایز گذشتیم...
+            ولی هنوز یه پیام مونده که مخصوص توئه.
+        </p>
+
+        <div class="secret-envelope" id="secretEnvelope">
+            💌
+        </div>
+
+        <button type="button" id="revealButton"
+                onclick="revealFinalMessage()">
+            باز کردن پیام مخفی 💖
+        </button>
+
+        <div class="hidden-message" id="hiddenMessage" hidden>
+            <h2>تولدت مبارک، قشنگم! 🎂❤️</h2>
+
+            <p>
+                می‌خواستم این سورپرایز کوچیک رو بسازم تا بهت یادآوری کنم
+                که چقدر برام ارزشمندی.
+            </p>
+
+            <p>
+                امیدوارم سال جدید زندگیت پر از آرامش، لبخند،
+                اتفاق‌های خوب و آرزوهای قشنگ باشه.
+            </p>
+
+            <p>
+                ممنونم برای تمام خاطره‌های قشنگی که ساختیم؛
+                امیدوارم خاطره‌های خوب بیشتری در انتظارمون باشن. 💗
+            </p>
+
+            <div class="final-heart">💖</div>
+            <p class="final-signature">با کلی آرزوی قشنگ برای تو 🌷</p>
+        </div>
+
+        <button type="button" onclick="showScreen('heartSky')">
+            برگشت به آسمان قلب‌ها 🌌
+        </button>
+
+    </div>
+</section>
+
+
+
+<script>
+    
+    // فعلاً هدیه‌ها نمونه هستند؛ بعداً با انتخاب‌های تو عوضشان می‌کنیم.
+    const gifts = [
+        {
+            icon: "💐",
+            name: "یک سورپرایز گل‌گلی!",
+            message: "یه هدیه کوچیک برای کسی که لبخندش قشنگه ❤️"
+        },
+        {
+            icon: "💌",
+            name: "یک نامه مخصوص تو",
+            message: "چند تا حرف دارم که دوست دارم همیشه یادت بمونه."
+        },
+        {
+            icon: "🧸",
+            name: "یک هدیه بامزه!",
+            message: "این یکی برای لحظه‌های شیرین و خنده‌دارته."
+        },
+        {
+            icon: "💎",
+            name: "یک سورپرایز خاص!",
+            message: "شاید این جعبه شروع یه خاطره جدید باشه. ✨"
+        },
+        {
+            icon: "❤️",
+            name: "آخرین هدیه",
+            message: "آخرین هدیه هم قلبمو میدم بهت ❤️"
+        }
+        ,  {
+        icon: "🎁",
+        name: "یه سورپرایز ویژه!",
+        message: "قشنگ‌ترین اتفاق زندگی من، داشتن توئه ❤️"
+    }
+    ];
+
+    let openedBoxes = new Set();
+
+    function showScreen(screenId) {
+        document.querySelectorAll(".screen").forEach(screen => {
+            screen.classList.remove("active");
+        });
+
+        document.getElementById(screenId).classList.add("active");
+    }
+
+    function showBoxes() {
+        showScreen("selection");
+        renderBoxes();
+    }
+    function backToBoxes() {
+    showBoxes();
+}
+
+    function renderBoxes() {
+        const container = document.getElementById("boxes");
+        container.innerHTML = "";
+
+        gifts.forEach((gift, index) => {
+            const box = document.createElement("div");
+            box.className = "box";
+
+            if (openedBoxes.has(index)) {
+                box.classList.add("opened");
+            }
+
+            box.innerHTML = `
+                <div class="gift-visual">
+                    <div class="gift-glow"></div>
+                    <div class="gift-body"></div>
+                    <div class="gift-lid"></div>
+                    <div class="gift-bow"></div>
+                </div>
+                    <span>جعبه شماره ${index + 1}</span> 
+            `;
+
+            if (!openedBoxes.has(index)) {
+                box.addEventListener("click", () => openGift(index));
+            }
+
+            container.appendChild(box);
+        });
+    }
+
+    function openGift(index) {
+        if (openedBoxes.has(index)) return;
+        
+
+       const boxes = document.querySelectorAll(".box");
+const selectedBox = boxes[index];
+
+// جلوگیری از انتخاب مجدد هنگام انیمیشن
+selectedBox.style.pointerEvents = "none";
+selectedBox.classList.add("shaking");
+
+setTimeout(() => {
+    openedBoxes.add(index);
+
+    const gift = gifts[index];
+
+    document.getElementById("resultIcon").textContent = gift.icon;
+    document.getElementById("giftName").textContent = gift.name;
+    document.getElementById("giftMessage").textContent = gift.message;
+
+    showScreen("reveal");
+
+    const icon = document.getElementById("resultIcon");
+    icon.classList.remove("reveal-animation");
+
+    // راه‌اندازی دوباره انیمیشن
+    void icon.offsetWidth;
+    icon.classList.add("reveal-animation");
+
+    createParticles();
+}, 600);
+}
+    function createParticles() {
+    const symbols = ["💖", "💕", "✨", "💗", "⭐", "🌸"];
+    const container = document.createElement("div");
+
+    container.className = "gift-particles";
+    document.body.appendChild(container);
+
+    for (let i = 0; i < 24; i++) {
+        const particle = document.createElement("span");
+
+        particle.className = "gift-particle";
+        particle.textContent =
+            symbols[Math.floor(Math.random() * symbols.length)];
+
+        particle.style.setProperty("--x", `${Math.random() * 100 - 50}vw`);
+        particle.style.setProperty("--y", `${Math.random() * 100 - 50}vh`);
+        particle.style.setProperty("--rotation", `${Math.random() * 360}deg`);
+        particle.style.animationDelay = `${Math.random() * 0.4}s`;
+
+        container.appendChild(particle);
+    }
+
+    setTimeout(() => {
+        container.remove();
+    }, 2200);
+}
+   
+const letterText = `تولدت مبارک، قشنگم! ❤️
+
+امروز یه روز خاصه، چون روزیه که تو به دنیا اومدی.
+می‌خوام بدونی که بودنت چقدر می‌تونه دنیا رو قشنگ‌تر کنه.
+
+امیدوارم سال جدید زندگیت پر از لبخند، آرامش،
+اتفاق‌های خوب و آرزوهایی باشه که یکی‌یکی به حقیقت می‌پیوندن.
+
+ممنونم که با بودنت، خاطره‌های قشنگ می‌سازی.
+امیدوارم وقتی این نامه رو می‌خونی، لبخند روی لبت باشه.
+
+تولدت مبارک! 🎂💖`;
+
+let typingTimer;
+
+function showLetterPage() {
+    showScreen("letter");
+    startTyping();
+}
+
+function startTyping() {
+    clearTimeout(typingTimer);
+
+    const letterElement = document.getElementById("typedLetter");
+    const cursor = document.getElementById("typingCursor");
+
+    letterElement.textContent = "";
+    cursor.style.display = "inline";
+
+    let index = 0;
+
+    function typeNextCharacter() {
+        if (index < letterText.length) {
+            letterElement.textContent += letterText.charAt(index);
+            index++;
+            typingTimer = setTimeout(typeNextCharacter, 45);
+        } else {
+            cursor.style.display = "none";
+        }
+    }
+
+    typeNextCharacter();
+}
+
+const reasons = [
+    "چون بودنت روزم رو قشنگ‌تر می‌کنه 🌸",
+    "چون خنده‌هات حس خوبی بهم می‌ده 💗",
+    "چون می‌تونم باهات خاطره‌های قشنگ بسازم ✨",
+    "چون حرف زدن باهات لذت‌بخشه 💌",
+    "چون خودِ واقعی خودتی 🩷",
+    "چون لحظه‌های ساده با تو خاص‌تر می‌شن 🎀",
+    "چون مهربونی‌هات برام ارزشمندن 🌷",
+    "چون کنار تو کلی چیز قشنگ برای یاد گرفتن هست 💕",
+    "چون حضورت برام مهمه ❤️",
+    "چون هر روز می‌تونم دلیل تازه‌ای برای دوست داشتنت پیدا کنم 💖"
+];
+
+function showReasonsPage() {
+    showScreen("reasons");
+
+    const list = document.getElementById("reasonsList");
+    list.innerHTML = "";
+
+    reasons.forEach((reason, index) => {
+        const item = document.createElement("div");
+        item.className = "reason-item";
+        item.style.animationDelay = `${index * 0.12}s`;
+
+        const number = document.createElement("span");
+        number.className = "reason-number";
+        number.textContent = index + 1;
+
+        const text = document.createElement("span");
+        text.textContent = reason;
+
+        item.append(number, text);
+        list.appendChild(item);
+    });
+}
+
+function showCouponPage() {
+    showScreen("coupon");
+
+    const message = document.getElementById("couponMessage");
+    message.textContent = "";
+}
+
+function redeemCoupon() {
+    const message = document.getElementById("couponMessage");
+
+    message.textContent =
+        "🎉 این کوپن مال توئه! حالا با هم یه تجربه‌ی قشنگ انتخاب می‌کنیم و براش برنامه می‌ریزیم. 💗";
+
+    message.classList.remove("coupon-message-pop");
+    void message.offsetWidth;
+    message.classList.add("coupon-message-pop");
+}
+
+function showHeartSky() {
+    const sky = document.getElementById("heartSky");
+    const background = document.getElementById("heartSkyBackground");
+
+    if (!sky || !background) {
+        console.error("صفحه آسمان قلب‌ها پیدا نشد!");
+        return;
+    }
+
+    showScreen("heartSky");
+
+    background.innerHTML = "";
+
+    const hearts = ["❤️", "💗", "💖", "💕", "💘", "✨", "💜"];
+
+    for (let i = 0; i < 35; i++) {
+        const heart = document.createElement("span");
+
+        heart.className = "sky-floating-heart";
+        heart.textContent = hearts[
+            Math.floor(Math.random() * hearts.length)
+        ];
+
+        heart.style.left = Math.random() * 100 + "%";
+        heart.style.setProperty(
+            "--drift",
+            `${Math.random() * 140 - 70}px`
+        );
+        heart.style.animationDuration = `${6 + Math.random() * 8}s`;
+        heart.style.animationDelay = `${-Math.random() * 12}s`;
+        heart.style.fontSize = `${14 + Math.random() * 24}px`;
+
+        background.appendChild(heart);
+    }
+}
+
+function showFinalMessagePage() {
+    showScreen("finalMessage");
+
+    // با هر بار ورود، پیام دوباره مخفی می‌شود
+    document.getElementById("hiddenMessage").hidden = true;
+    document.getElementById("secretLock").textContent = "🔐";
+    document.getElementById("secretEnvelope").classList.remove("envelope-open");
+    document.getElementById("revealButton").style.display = "inline-block";
+}
+
+function revealFinalMessage() {
+    const message = document.getElementById("hiddenMessage");
+    const envelope = document.getElementById("secretEnvelope");
+    const lock = document.getElementById("secretLock");
+    const button = document.getElementById("revealButton");
+
+    message.hidden = false;
+    message.classList.remove("final-message-show");
+
+    envelope.classList.add("envelope-open");
+    lock.textContent = "🔓";
+    button.style.display = "none";
+
+    // اجرای دوباره انیمیشن
+    void message.offsetWidth;
+    message.classList.add("final-message-show");
+}
+
+</script>
+
+
+
+
+
+
+</body>
+</html>
