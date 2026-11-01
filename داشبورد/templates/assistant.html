@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>دستیار هوشمند | NOVA</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <main class="app-main">
+
+        <!-- سربرگ -->
+        <header class="content-header">
+            <div>
+                <span class="header-caption">NOVA INTELLIGENCE</span>
+                <h1>دستیار هوشمند ✨</h1>
+                <p>دستیار شخصی تو برای مدیریت بهتر کارها</p>
+            </div>
+        </header>
+
+        <!-- کارت معرفی -->
+        <section class="welcome-panel ai-welcome">
+            <div class="ai-avatar">✦</div>
+
+            <h2>سلام! من دستیار NOVA هستم 👋</h2>
+
+            <p>
+                می‌تونم برای برنامه‌ریزی پروژه‌ها و مدیریت وظایفت
+                بهت کمک کنم.
+            </p>
+        </section>
+
+        <!-- فضای گفت‌وگو -->
+        <section class="ai-chat-panel">
+
+            <div class="chat-heading">
+                <span class="status-dot"></span>
+                <h2>گفت‌وگو با NOVA</h2>
+            </div>
+
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-message assistant-message">
+                    سلام! 👋 امروز دوست داری روی چه کاری تمرکز کنیم؟
+                </div>
+            </div>
+
+            <form id="chat-form" class="chat-form">
+                <input
+                    type="text"
+                    id="chat-input"
+                    placeholder="پیامت رو اینجا بنویس..."
+                    maxlength="500"
+                    autocomplete="off"
+                    required
+                >
+
+                <button type="submit" class="project-submit">
+                    ارسال ↑
+                </button>
+            </form>
+
+            <p class="chat-note">
+                نسخه‌ی اولیه دستیار NOVA
+            </p>
+
+        </section>
+
+        <a href="/" class="upgrade-button">
+            بازگشت به داشبورد ←
+        </a>
+
+    </main>
+
+    <script>
+    const chatForm = document.getElementById("chat-form");
+    const chatInput = document.getElementById("chat-input");
+    const chatMessages = document.getElementById("chat-messages");
+
+    chatForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const message = chatInput.value.trim();
+
+        if (!message) return;
+
+        // نمایش پیام کاربر
+        addMessage(message, "user-message");
+
+        chatInput.value = "";
+        chatInput.disabled = true;
+
+        // نمایش پیام انتظار
+        const loadingMessage = addMessage(
+            "NOVA در حال فکر کردن است...",
+            "assistant-message"
+        );
+
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: message
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "خطا در دریافت پاسخ");
+            }
+
+            loadingMessage.textContent = data.reply;
+
+        } catch (error) {
+            loadingMessage.textContent =
+                "متأسفانه ارتباط برقرار نشد. لطفاً تنظیمات API و سرور را بررسی کن.";
+
+            console.error("NOVA chat error:", error);
+
+        } finally {
+            chatInput.disabled = false;
+            chatInput.focus();
+        }
+    });
+
+    function addMessage(text, className) {
+        const messageElement = document.createElement("div");
+
+        messageElement.className = "chat-message " + className;
+        messageElement.textContent = text;
+
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        return messageElement;
+    }
+</script>
+
+</body>
+</html>

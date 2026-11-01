@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NOVA | Smart Workspace</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <header class="navbar">
+        <a href="/" class="logo">
+            <span class="logo-icon">N</span>
+            <span>NOVA</span>
+        </a>
+
+        <nav>
+            <a href="#home">خانه</a>
+            <a href="#features">امکانات</a>
+            <a href="#about">درباره ما</a>
+        </nav>
+
+        <button class="profile-button">فضای کاری من ↗</button>
+    </header>
+    <aside class="sidebar">
+
+    <a href="/" class="sidebar-brand">
+        <span class="sidebar-logo">N</span>
+        <span>NOVA</span>
+    </a>
+
+    <div class="sidebar-section">
+        <span class="sidebar-label">WORKSPACE</span>
+
+        <a href="#home" class="sidebar-link active">
+            <span class="sidebar-icon">⌂</span>
+            <span>داشبورد</span>
+        </a>
+
+       
+    <a href="{{ url_for('show_projects') }}" class="sidebar-link">
+    <span class="sidebar-icon">▦</span>
+    <span>پروژه‌ها</span>
+    <span class="sidebar-count" id="project-sidebar-count">...</span>
+    </a>
+
+
+        
+<a href="{{ url_for('manage_tasks') }}" class="sidebar-link">
+    <span class="sidebar-icon">✓</span>
+    <span>وظایف</span>
+</a>
+
+
+       <a href="{{ url_for('analytics') }}" class="sidebar-link">
+    <span class="sidebar-icon">⌁</span>
+    <span>تحلیل داده</span>
+</a>
+    </div>
+
+    <div class="sidebar-section">
+        <span class="sidebar-label">TOOLS</span>
+
+       <a href="{{ url_for('ai_assistant') }}" class="sidebar-link">
+            <span class="sidebar-icon">✦</span>
+            <span>دستیار هوشمند</span>
+            <span class="sidebar-badge">AI</span>
+        </a>
+
+        <a href="#settings" class="sidebar-link">
+            <span class="sidebar-icon">⚙</span>
+            <span>تنظیمات</span>
+        </a>
+    </div>
+
+    <div class="sidebar-bottom">
+
+        <div class="upgrade-card">
+            <span class="upgrade-icon">✧</span>
+            <h3>فضای خلاقیت تو</h3>
+            <p>ایده‌های بزرگت را به پروژه تبدیل کن.</p>
+            <a href="#features" class="upgrade-button">
+                مشاهده امکانات ←
+            </a>
+        </div>
+
+        <div class="sidebar-profile">
+            <div class="profile-avatar">N</div>
+
+            <div class="profile-info">
+                <strong>کاربر NOVA</strong>
+                <span>فضای کاری شخصی</span>
+            </div>
+
+            <span class="profile-menu">⋯</span>
+        </div>
+
+    </div>
+
+</aside>
+    <div class="app-layout">
+
+    <section class="app-main">
+
+        <header class="content-header">
+            <div>
+                <span class="header-caption">YOUR WORKSPACE</span>
+                <h1 id="page-title">داشبورد</h1>
+                <p id="page-description">
+                    به فضای کاری هوشمند NOVA خوش آمدی.
+                </p>
+            </div>
+
+            <div class="header-actions">
+                <span class="live-indicator">● سیستم فعال</span>
+                <button class="notification-button" aria-label="اعلان‌ها">
+                    ♧
+                </button>
+            </div>
+        </header>
+        <div class="clock-panel">
+    <div>
+        <span class="clock-label">LOCAL TIME</span>
+        <h2 id="live-clock">00:00:00</h2>
+        <p id="live-date">در حال بارگذاری تاریخ...</p>
+    </div>
+    
+    <span class="clock-icon">◷</span>
+</div>
+
+        <div id="dynamic-content">
+
+            <div class="welcome-panel">
+                <span class="panel-tag">NOVA WORKSPACE</span>
+                <h2 id="welcome-message">    به NOVA خوش آمدی!</h2>
+
+                <p>
+                    پروژه‌هایت را مدیریت کن، پیشرفتت را ببین
+                    و برای ایده‌های جدیدت برنامه‌ریزی کن.
+                </p>
+            </div>
+
+            <div class="quick-grid">
+
+               <article class="quick-card">
+        <span>✦</span>
+        <h3>پروژه‌های من</h3>
+        <p>تعداد پروژه‌های ثبت‌شده:</p>
+        <strong id="project-count">در حال بارگذاری...</strong>
+    </article>
+
+              
+        <article class="quick-card">
+    <span>✓</span>
+    <h3>وظایف انجام‌شده</h3>
+    <p>تعداد کارهایی که به پایان رسوندی:</p>
+    <strong id="completed-count">در حال بارگذاری...</strong>
+        </article>
+
+        <article class="quick-card">
+    <span>◈</span>
+    <h3>وظایف باقی‌مانده</h3>
+    <p>کارهایی که هنوز منتظر انجام هستند:</p>
+    <strong id="pending-count">در حال بارگذاری...</strong>
+        </article>
+        
+            <article class="quick-card">
+                <span>◉</span>
+                <h3>درصد پیشرفت</h3>
+                <p>میزان وظایف تکمیل‌شده</p>
+                <strong id="progress-percent">در حال بارگذاری...</strong>
+            </article>
+
+
+
+            </div>
+
+        </div>
+        <section class="welcome-panel">
+    <span class="panel-tag">QUICK ACCESS</span>
+    <h2>دسترسی سریع</h2>
+    <p>به بخش‌های مختلف NOVA سریع‌تر دسترسی پیدا کن.</p>
+
+    <div class="quick-grid">
+
+        <a href="{{ url_for('show_projects') }}" class="quick-card">
+            <span>📁</span>
+            <h3>مدیریت پروژه‌ها</h3>
+            <p>مشاهده و ساخت پروژه‌ها</p>
+        </a>
+
+        <a href="{{ url_for('manage_tasks') }}" class="quick-card">
+            <span>✓</span>
+            <h3>مدیریت وظایف</h3>
+            <p>برنامه‌ریزی کارهای روزانه</p>
+        </a>
+
+        <a href="{{ url_for('ai_assistant') }}" class="quick-card">
+            <span>✦</span>
+            <h3>دستیار هوشمند</h3>
+            <p>گفت‌وگو با دستیار NOVA</p>
+        </a>
+
+        <a href="{{ url_for('analytics') }}" class="quick-card">
+            <span>📊</span>
+            <h3>تحلیل داده‌ها</h3>
+            <p>بررسی میزان پیشرفت</p>
+        </a>
+
+    </div>
+        </section>
+
+    </section>
+
+</div>
+
+    <main id="home">
+
+        <section class="hero">
+
+            <div class="badge">
+                <span class="status-dot"></span>
+                فضای کاری هوشمند تو
+            </div>
+
+            <h1>
+                ایده‌هایت را به
+                <span class="gradient-text">واقعیت تبدیل کن.</span>
+            </h1>
+
+            <p class="hero-description">
+                به NOVA خوش آمدی؛ جایی برای مدیریت پروژه‌ها،
+                سازمان‌دهی ایده‌ها و ساختن آینده‌ای بهتر.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#features" class="primary-button">
+                    شروع کن <span>←</span>
+                </a>
+
+                <a href="#about" class="secondary-button">
+                    بیشتر بدان
+                </a>
+            </div>
+
+            <div class="dashboard-preview">
+
+                <div class="preview-header">
+                    <div class="window-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <span class="preview-title">NOVA Workspace</span>
+
+                    <span class="online-status">● آنلاین</span>
+                </div>
+
+                <div class="preview-content">
+
+                    <div class="welcome-card">
+                        <span class="card-label">WORKSPACE OVERVIEW</span>
+
+                        <h2>خوش برگشتی! 👋</h2>
+
+                        <p>آماده‌ای امروز یک قدم جلوتر بروی؟</p>
+
+                        <div class="progress-track">
+                            <div class="progress-value"></div>
+                        </div>
+
+                        <span class="progress-caption">
+                            پیشرفت امروز: ۷۵٪
+                        </span>
+                    </div>
+
+                    <div class="stats-grid">
+
+                        <div class="stat-card purple">
+                            <span class="stat-icon">✦</span>
+                            <span class="stat-label">پروژه‌ها</span>
+                            <strong>۱۲</strong>
+                            <span class="stat-change">+۲۰٪ این ماه</span>
+                        </div>
+
+                        <div class="stat-card blue">
+                            <span class="stat-icon">◈</span>
+                            <span class="stat-label">وظایف انجام‌شده</span>
+                            <strong>۲۴</strong>
+                            <span class="stat-change">+۱۲٪ این ماه</span>
+                        </div>
+
+                        <div class="stat-card pink">
+                            <span class="stat-icon">✧</span>
+                            <span class="stat-label">ایده‌های جدید</span>
+                            <strong>۸</strong>
+                            <span class="stat-change">۳ ایده جدید</span>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <section class="features" id="features">
+
+            <div class="section-heading">
+                <span>امکانات NOVA</span>
+                <h2>همه‌چیز برای ساختن ایده‌های بزرگ</h2>
+            </div>
+
+            <div class="feature-grid">
+
+                <article class="feature-card">
+                    <div class="feature-icon purple-icon">✦</div>
+                    <h3>فضای کاری هوشمند</h3>
+                    <p>ایده‌ها و کارهایت را در یک فضای منظم مدیریت کن.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon blue-icon">◈</div>
+                    <h3>تحلیل پیشرفت</h3>
+                    <p>روند پیشرفت پروژه‌هایت را به‌سادگی دنبال کن.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-icon pink-icon">✧</div>
+                    <h3>مدیریت پروژه</h3>
+                    <p>پروژه‌هایت را سازمان‌دهی کن و برای اهدافت برنامه بریز.</p>
+                </article>
+
+            </div>
+
+        </section>
+
+        <footer id="about">
+            <a href="/" class="footer-logo">NOVA</a>
+            <p>ایده‌های بزرگ از قدم‌های کوچک شروع می‌شوند.</p>
+            <span>ساخته‌شده با Python و خلاقیت ✦</span>
+        </footer>
+
+    </main>
+<script>
+
+async function loadStats() {
+    try {
+        const response = await fetch("/api/stats");
+
+        if (!response.ok) {
+            throw new Error("دریافت آمار ناموفق بود");
+        }
+
+        const data = await response.json();
+
+        document.getElementById("project-count").textContent =
+            data.total_projects;
+            
+const sidebarCount = document.getElementById("project-sidebar-count");
+
+if (sidebarCount) {
+    sidebarCount.textContent = data.total_projects;
+}
+
+
+        document.getElementById("completed-count").textContent =
+            data.completed_tasks;
+
+        document.getElementById("pending-count").textContent =
+            data.pending_tasks;
+
+        document.getElementById("progress-percent").textContent =
+            data.progress_percent + "٪";
+
+    } catch (error) {
+        console.error("خطا در دریافت آمار:", error);
+    }
+}
+
+loadStats();
+
+</script>
+<script>
+function updateClock() {
+    const now = new Date();
+
+    document.getElementById("live-clock").textContent =
+        now.toLocaleTimeString("fa-IR", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        });
+
+    document.getElementById("live-date").textContent =
+        now.toLocaleDateString("fa-IR", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+<script>
+function updateWelcomeMessage() {
+    const hour = new Date().getHours();
+    const message = document.getElementById("welcome-message");
+
+    if (!message) return;
+
+    if (hour >= 5 && hour < 12) {
+        message.textContent = "صبح بخیر! آماده‌ای روزت رو عالی شروع کنی؟ ☀️";
+    } else if (hour >= 12 && hour < 18) {
+        message.textContent = "روز بخیر! وقتشه یک قدم دیگه جلو بری. 🌤️";
+    } else {
+        message.textContent = "شب بخیر! امروز هم برای تلاش‌هات ارزش قائلیم. 🌙";
+    }
+}
+
+updateWelcomeMessage();
+</script>
+</body>
+</html>

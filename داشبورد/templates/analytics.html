@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحلیل داده | NOVA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <main class="app-main">
+
+        <header class="content-header">
+            <div>
+                <span class="header-caption">NOVA ANALYTICS</span>
+                <h1>تحلیل داده‌ها 📊</h1>
+                <p>نمای کلی از عملکرد و پیشرفت فضای کاری تو.</p>
+            </div>
+        </header>
+
+        <section class="quick-grid">
+
+            <article class="quick-card">
+                <span>📁</span>
+                <h3>کل پروژه‌ها</h3>
+                <strong>{{ total_projects }}</strong>
+            </article>
+
+            <article class="quick-card">
+                <span>📋</span>
+                <h3>کل وظایف</h3>
+                <strong>{{ total_tasks }}</strong>
+            </article>
+
+            <article class="quick-card">
+                <span>✅</span>
+                <h3>وظایف انجام‌شده</h3>
+                <strong>{{ completed_tasks }}</strong>
+            </article>
+
+            <article class="quick-card">
+                <span>⏳</span>
+                <h3>وظایف باقی‌مانده</h3>
+                <strong>{{ pending_tasks }}</strong>
+            </article>
+
+        </section>
+
+        <section class="welcome-panel">
+            <span class="header-caption">TASK PROGRESS</span>
+            <h2>درصد پیشرفت کارها</h2>
+
+            <div class="progress-track">
+                <div
+                    class="progress-fill"
+                      style="--progress: {{ progress_percent | int }}%">
+                </div>
+            </div>
+
+            <h2>{{ progress_percent }}٪</h2>
+            ```html
+<div class="motivation-message">
+    {% if total_tasks == 0 %}
+        <span>🌱</span>
+        <p>اولین وظیفه‌ات رو ثبت کن و شروع کن!</p>
+    {% elif progress_percent == 100 %}
+        <span>🏆</span>
+        <p>فوق‌العاده بود! همه وظایفت رو انجام دادی!</p>
+    {% elif progress_percent >= 75 %}
+        <span>🔥</span>
+        <p>عالی پیش می‌ری؛ فقط کمی تا پایان مونده!</p>
+    {% elif progress_percent >= 40 %}
+        <span>💪</span>
+        <p>تلاشت نتیجه می‌ده؛ ادامه بده!</p>
+    {% else %}
+        <span>🚀</span>
+        <p>هر قدم کوچیک تو رو به هدفت نزدیک‌تر می‌کنه!</p>
+    {% endif %}
+</div>
+```
+
+            <p>
+                {% if total_tasks == 0 %}
+                    هنوز وظیفه‌ای ثبت نکردی.
+                {% elif progress_percent == 100 %}
+                    عالیه! همه‌ی وظایفت انجام شدن. 🎉
+                {% else %}
+                    به تلاشت ادامه بده؛ قدم‌به‌قدم جلو می‌ری!
+                {% endif %}
+            </p>
+        </section>
+        
+<section class="welcome-panel">
+    <span class="header-caption">TASK OVERVIEW</span>
+    <h2>وضعیت وظایف</h2>
+
+    <div class="task-chart-container">
+        
+<div
+    class="task-donut"
+    style="--percentage: {% if total_tasks > 0 %}{{ (completed_tasks / total_tasks * 100) | round(1) }}{% else %}0{% endif %}%; --progress-text: '{{ (completed_tasks / total_tasks * 100) | round | int if total_tasks > 0 else 0 }}%';">
+</div>
+
+
+        <div class="task-chart-legend">
+            <p>✅ انجام‌شده: <strong>{{ completed_tasks }}</strong></p>
+            <p>⏳ باقی‌مانده: <strong>{{ pending_tasks }}</strong></p>
+            <p>📋 کل وظایف: <strong>{{ total_tasks }}</strong></p>
+        </div>
+    </div>
+</section>
+
+
+<section class="welcome-panel">
+    <span class="header-caption">TASK COMPARISON</span>
+    <h2>مقایسه وضعیت وظایف</h2>
+
+<div class="task-status-badge">
+    {% if total_tasks == 0 %}
+        <span class="status-dot status-empty"></span>
+        <span>هنوز وظیفه‌ای ثبت نشده</span>
+    {% elif progress_percent == 100 %}
+        <span class="status-dot status-complete"></span>
+        <span>همه وظایف انجام شده‌اند</span>
+    {% else %}
+        <span class="status-dot status-active"></span>
+        <span>در حال پیشرفت</span>
+    {% endif %}
+</div>
+
+    <div class="bar-chart">
+        <div class="bar-item">
+            <div class="bar-label">
+                <span>انجام‌شده</span>
+                <strong>{{ completed_tasks }}</strong>
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill completed-bar"
+                    style="width: {{ progress_percent }}%;">
+                </div>
+            </div>
+        </div>
+
+        <div class="bar-item">
+            <div class="bar-label">
+                <span>باقی‌مانده</span>
+                <strong>{{ pending_tasks }}</strong>
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill pending-bar"
+                  style="width: {{ 100 - progress_percent }}%;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<button
+    type="button"
+    class="refresh-button"
+    onclick="window.location.reload()">
+    ↻ به‌روزرسانی آمار
+</button>
+
+<p class="last-updated">
+    آخرین بررسی:
+    <span id="update-time">در حال ثبت زمان...</span>
+</p>
+
+<script>
+    const updateTime = document.getElementById("update-time");
+
+    if (updateTime) {
+        updateTime.textContent = new Date().toLocaleTimeString("fa-IR", {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    }
+</script>
+
+        <a href="/" class="upgrade-button">
+            بازگشت به داشبورد ←
+        </a>
+
+    </main>
+</body>
+</html>

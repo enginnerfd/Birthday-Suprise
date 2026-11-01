@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وظایف من | NOVA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <main class="app-main">
+        <header class="content-header">
+            <div>
+                <span class="header-caption">NOVA WORKSPACE</span>
+                <h1>وظایف من</h1>
+                <p>کارهای روزانه‌ات رو مدیریت کن.</p>
+            </div>
+        </header>
+        <a href="{{ url_for('export_tasks') }}" class="upgrade-button">
+    📥 دانلود گزارش وظایف
+        </a>
+
+        <section class="welcome-panel">
+            <h2>ثبت وظیفه جدید ✨</h2>
+            <section class="welcome-panel">
+    <h2>جست‌وجو بین وظایف 🔍</h2>
+
+    <form action="{{ url_for('manage_tasks') }}" method="GET" class="project-form">
+        <input
+            type="text"
+            name="search"
+            placeholder="عنوان وظیفه رو بنویس..."
+            value="{{ request.args.get('search', '') }}"
+        >
+
+        <button type="submit" class="project-submit">
+            جست‌وجو
+        </button>
+    </form>
+
+    {% if request.args.get('search') %}
+        <a href="{{ url_for('manage_tasks') }}" class="upgrade-button">
+            نمایش همه وظایف
+        </a>
+    {% endif %}
+</section>
+            <p>کاری که می‌خوای انجام بدی وارد کن.</p>
+
+            <form action="{{ url_for('manage_tasks') }}" method="POST" class="project-form">
+                <input
+                    type="text"
+                    name="task_title"
+                    placeholder="مثلاً: طراحی صفحه اصلی"
+                    maxlength="200"
+                    required
+                >
+                <button type="submit" class="project-submit">
+                    + افزودن وظیفه
+                </button>
+                <label for="due_date">تاریخ سررسید:</label>
+<input
+    type="date"
+    id="due_date"
+    name="due_date"
+>
+            </form>
+        </section>
+
+        <section class="quick-grid">
+            {% for task in tasks %}
+            <article class="quick-card">
+                <span>✓</span>
+                <h3>{{ task['title'] }}</h3>
+                {% if task.due_date %}
+    <p class="task-date">
+        📅 سررسید:
+        {{ task.due_date }}
+    </p>
+{% else %}
+    <p class="task-date">
+        📅 بدون تاریخ سررسید
+    </p>
+{% endif %}
+                <p>
+    وضعیت:
+    {% if task['completed'] %}
+        انجام‌شده ✅
+    {% else %}
+        در انتظار انجام
+    {% endif %}
+</p>
+
+<form action="{{ url_for('toggle_task', task_id=task['id']) }}" method="POST">
+    <button type="submit" class="task-toggle">
+        {% if task['completed'] %}
+            بازگرداندن به وظایف فعال
+        {% else %}
+            ✓ انجام شد
+        {% endif %}
+    </button>
+</form>
+
+<form action="{{ url_for('delete_task', task_id=task['id']) }}" method="POST"
+      onsubmit="return confirm('از حذف این وظیفه مطمئنی؟');">
+    <button type="submit" class="task-delete">
+        🗑️ حذف وظیفه
+    </button>
+</form>
+
+            </article>
+            {% else %}
+            <p>هنوز وظیفه‌ای ثبت نکردی.</p>
+            {% endfor %}
+        </section>
+
+        <a href="/" class="upgrade-button">بازگشت به داشبورد ←</a>
+    </main>
+
+</body>
+</html>

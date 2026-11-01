@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پروژه‌های من | NOVA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="app-main">
+        <header class="content-header">
+            <div>
+                <span class="header-caption">NOVA WORKSPACE</span>
+                <h1>پروژه‌های من</h1>
+                <p>ایده‌هات رو به پروژه تبدیل کن.</p>
+            </div>
+        </header>
+
+        <section class="welcome-panel">
+            <h2>ساخت یک پروژه جدید ✨</h2>
+            <p>ایده‌ات رو وارد کن تا به فهرست پروژه‌ها اضافه بشه.</p>
+
+            <form action="{{ url_for('show_projects') }}" method="POST" class="project-form">
+                <input
+                    type="text"
+                    name="project_name"
+                    placeholder="مثلاً: طراحی وب‌سایت NOVA"
+                    maxlength="100"
+                    required
+                >
+                <button type="submit" class="project-submit">
+                    + افزودن پروژه
+                </button>
+            </form>
+        </section>
+
+        <!-- جست‌وجوی پروژه‌ها -->
+        <form action="{{ url_for('show_projects') }}" method="GET" class="project-search-form">
+    <span class="search-icon" aria-hidden="true"></span>
+
+    <input
+        type="text"
+        name="search"
+        placeholder="جست‌وجوی نام پروژه..."
+        value="{{ search_query }}"
+        maxlength="100"
+    >
+
+    <button type="submit" class="project-submit">
+        جست‌وجو
+    </button>
+</form>
+
+        <!-- فهرست پروژه‌ها -->
+        <section class="quick-grid">
+            {% for project in projects %}
+                <article class="quick-card">
+                    <span>✦</span>
+                    <h3>{{ project['name'] }}</h3>
+
+                   <form
+    action="{{ url_for('delete_project', project_id=project['id']) }}"
+    method="POST"
+    onsubmit="return confirm('از حذف این پروژه مطمئنی؟');"
+>
+    <button type="submit" class="delete-project">
+        حذف پروژه
+    </button>
+</form>
+                </article>
+            {% else %}
+                <p>
+                    {% if search_query %}
+                        پروژه‌ای با این نام پیدا نشد.
+                    {% else %}
+                        هنوز پروژه‌ای ثبت نکردی.
+                    {% endif %}
+                </p>
+            {% endfor %}
+        </section>
+
+        <a href="/" class="upgrade-button">بازگشت به داشبورد ←</a>
+    </main>
+</body>
+</html>
